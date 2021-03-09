@@ -20,6 +20,10 @@ set.seed(12345)
 To run the simulations, we make use of our R library `digitalPCRsimulations`.
 
 ```{r}
+# Install library 'digitalPCRsimulations'
+library(devtools)
+#install_github("rjnell/digitalPCRsimulations")
+
 # Load library 'digitalPCRsimulations'
 library(digitalPCRsimulations)
 ```
@@ -40,7 +44,6 @@ sample_from_2_universes_diff = function(universe1, universe2, sample, alpha=0.95
   # As described in the manuscript:
   # concentration difference target1 - target2 =
   # [1] - [2] = -log(p_1_min / p_2_min) / volume
-
   p_1_min = (n - sum(universe1[sample])) / n
   p_2_min = (n - sum(universe2[sample])) / n
   
@@ -156,6 +159,7 @@ simulate_multiplex_adjusted_model = function(input_ng,
 
 
 # Shortcut function to plot summary of simulations
+```{r}
 plot_simulations_summary = function(main, simulation_results, true_tcf) {
   
   par(mar=c(5.1, 5, 4.1, 2.1))
@@ -212,10 +216,10 @@ plot_simulations_summary = function(main, simulation_results, true_tcf) {
          pch = 15, cex=0.9, col="#333333")
   
 }
-
+```
 
 ### SIMULATION 1: 20 ng, copy number stable, 50% TCF
-
+```{r}
 simulation_1 = simulate_multiplex_adjusted_model(
   
   # Input in ng genomic DNA
@@ -234,24 +238,24 @@ simulation_1 = simulate_multiplex_adjusted_model(
   n_droplets = 20000, 
   
   # Number of simulations
-  n_simulations = 10000, 
+  n_simulations = 100, 
   
   # Level of significance
   alpha = 0.95)
 
 # Plot summary of simulation results of classic model
-png("simulations/fig-2a-1.png", res=600, width=2000, height=2500)  
+png("fig-2a-1.png", res=600, width=2000, height=2500)  
 plot_simulations_summary("Classic model", simulation_1$tcf_classic, 0.5)
 dev.off()
 
 # Plot summary of simulation results of adjusted model
-png("simulations/fig-2a-2.png", res=600, width=2000, height=2500)  
+png("fig-2a-2.png", res=600, width=2000, height=2500)  
 plot_simulations_summary("Adjusted model", simulation_1$tcf_adjusted, 0.5)
 dev.off()
-
+```
 
 ### SIMULATION 2: 20 ng, copy number unstable, 50% TCF
-
+```{r}
 simulation_2 = simulate_multiplex_adjusted_model(
   
   # Input in ng genomic DNA
@@ -270,36 +274,18 @@ simulation_2 = simulate_multiplex_adjusted_model(
   n_droplets = 20000, 
   
   # Number of simulations
-  n_simulations = 10000, 
+  n_simulations = 100, 
   
   # Level of significance
   alpha = 0.95)
 
 # Plot summary of simulation results of classic model
-png("simulations/fig-2b-1.png", res=600, width=2000, height=2500)  
+png("fig-2b-1.png", res=600, width=2000, height=2500)  
 plot_simulations_summary("Classic model", simulation_2$tcf_classic, 0.5)
 dev.off()
 
 # Plot summary of simulation results of adjusted model
-png("simulations/fig-2b-2.png", res=600, width=2000, height=2500)  
+png("fig-2b-2.png", res=600, width=2000, height=2500)  
 plot_simulations_summary("Adjusted model", simulation_2$tcf_adjusted, 0.5)
 dev.off()
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
