@@ -7,7 +7,7 @@ output:
 ---
 
 # Introduction
-To assess the performance and mathematical validity of both our *classic* and *adjusted model*, an in silico simulation of the experimental setups was designed, which we describe here. 
+To assess the performance and mathematical validity of both our *classic* and *adjusted model*, *in silico*  simulation of the experimental setups was designed, which we describe here. 
 Using these simulations, many virtual digital PCR experiments can be carried out under specified conditions, allowing for an extensive evaluation of the theoretical accuracy and precision of the obtained results.
 
 In order to reproduce the results of **Figure 2A** and **2B** of the manuscript, we first set a random seed.
@@ -84,24 +84,24 @@ simulate_multiplex_adjusted_model = function(input_ng,
                                              n_simulations, 
                                              alpha) {
   
-  # The amount of input alleles of the reference depends on the chosen amount of input DNA, 
-  # the T-cell fraction and the CNV of the reference.
+  # The amount of input alleles of the reference depends on the chosen amount
+  # of input DNA, the T-cell fraction and the CNV of the reference.
   # As in T cells (= healthy cells) a default CNV of 2 is found, 
   # the CNV of the reference can only be altered due to CNA in the non-T cells.
   input_ng_ref = input_ng * (tcf * 2 + (1-tcf) * cnv_ref) / 2
   universe_ref = universe(input_ng_ref)
   
-  # The amount of input alleles of the regional marker depends on the chosen amount of input DNA, 
-  # the T-cell fraction and the regional CNV.
+  # The amount of input alleles of the regional marker depends on the chosen amount 
+  # of input DNA, the T-cell fraction and the regional CNV.
   # In T cells (= healthy cells) a default CNV of 2 is found, 
   # while in non-T cells we observe the regional CNV.
   input_ng_region = input_ng * (tcf * 2 + (1-tcf) * cnv_region) / 2
   universe_region = universe(input_ng_region)
   
-  # The amount of input alleles of the T-cell marker depends on the chosen amount of input DNA, 
-  # the T-cell fraction and the regional CNV.
-  # In T-cells the marker is completely lost, 
-  # while in non-T cells the regional CNV determines the absolute presence of the T-cell marker.
+  # The amount of input alleles of the T-cell marker depends on the chosen amount  
+  # of input DNA, the T-cell fraction and the regional CNV.
+  # In T-cells the marker is completely lost, while in non-T cells 
+  # the regional CNV determines the absolute presence of the T-cell marker.
   input_ng_tcm = input_ng * (1-tcf) * cnv_region / 2
   universe_tcm = universe(input_ng_tcm)
   
@@ -204,13 +204,7 @@ plot_simulations_summary = function(main, simulation_results, true_tcf) {
   results = r[1:20,]*100
   results = results[order(results[,1]),]
   
-  lty=rep(1,20)
-  col=rep("#b1b1b1",20)
-  w=which(results[,2]>50 | results[,3] <50)
-  lty[w] = 1
-  col[w] = "#FBB4AF"
-  
-  arrows(1:nrow(results), results[,2], 1:nrow(results), results[,3], length=0.05, angle=90, code=3, col=col,lty=lty,lwd=1.4)
+  arrows(1:nrow(results), results[,2], 1:nrow(results), results[,3], length=0.05, angle=90, code=3, col="#b1b1b1", lwd=1.4)
   points(x = 1:nrow(results),
          y = results[,1],
          pch = 15, cex=0.9, col="#333333")
@@ -238,7 +232,7 @@ simulation_1 = simulate_multiplex_adjusted_model(
   n_droplets = 20000, 
   
   # Number of simulations
-  n_simulations = 100, 
+  n_simulations = 10000, 
   
   # Level of significance
   alpha = 0.95)
@@ -274,7 +268,7 @@ simulation_2 = simulate_multiplex_adjusted_model(
   n_droplets = 20000, 
   
   # Number of simulations
-  n_simulations = 100, 
+  n_simulations = 10000, 
   
   # Level of significance
   alpha = 0.95)
